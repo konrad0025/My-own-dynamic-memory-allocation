@@ -1,6 +1,6 @@
 # My own functions to dynamic memory allocation
 One of the projects to pass the course operating systems
-
+###### it took around 18h in 3 days to be completed
 This project is mainly about creating custom version of the popular
 <br><b>dynamic memory allocation functions</b> in cstdlib:<br>
 malloc<br>calloc<br>realloc<br>free<br>
