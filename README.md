@@ -8,7 +8,7 @@ malloc<br>calloc<br>realloc<br>free<br>
 ### How it works?
 Functions for memory management are using sbrk() to increments the program's data space
 ### Functions
-<b>heap_malloc</b>, <b>heap_calloc</b>, <b>heap_realloc</b>, <b>heap_free</b> are working similar to their counterparts is cstdlib,<br>
+<b>heap_malloc</b>, <b>heap_calloc</b>, <b>heap_realloc</b>, <b>heap_free</b> are working similar to their counterparts in cstdlib,<br>
 but before we start using them, we have to init heap with <b>heap_setup()</b> and after all destroy heap with <b>heap_clean()</b>
 <br><br>
 we have also functions named
