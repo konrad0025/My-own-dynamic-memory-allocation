@@ -352,7 +352,6 @@ int heap_validate(void)
     {
         for(ptr=memory_manager.head->p_next;ptr!=memory_manager.tail;ptr=ptr->p_next)
         {
-
             int check;
             check=check_block(ptr);
             if(check)

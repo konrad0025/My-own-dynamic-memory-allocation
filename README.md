@@ -17,3 +17,20 @@ we have also functions named
 <b>heap_realloc_aligned</b><br>which
 are working very similar to not aligned versions, with one exception<br>
 they manage only aligned memory space to the full pages size(4*1024)
+##### What's more?
+There also functions to help control heap<br>
+<b>heap_validate()</b><br>
+which is returning "0" if heap is not damaged<br>
+
+<b>get_pointer_type(const void* const <b><em>pointer</em></b>)</b>
+which is returning enum value depend on <b><em>pointer</em></b> type
+<br>enum pointer_type_t<br>
+{<br>
+    pointer_null,<br>
+    pointer_heap_corrupted,<br>
+    pointer_control_block,<br>
+    pointer_inside_fences,<br>
+    pointer_inside_data_block,<br>
+    pointer_unallocated,<br>
+    pointer_valid<br>
+};
