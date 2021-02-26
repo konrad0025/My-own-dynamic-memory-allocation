@@ -22,8 +22,8 @@ struct block_t{
     struct block_t *p_prev;
 
     size_t free; // 1==free 0==busy
-    size_t size; // wielkosc bloku
-    size_t control; // suma kontrolna
+    size_t size; // block size
+    size_t control; // control sum
 
 };
 

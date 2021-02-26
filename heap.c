@@ -61,9 +61,8 @@ void set_fence(struct block_t* block)
 }
 int check_block(struct block_t* block)
 {
-    if(block->control!=sum_control(block)) //naruszenie bloku kontrolnego
+    if(block->control!=sum_control(block))
     {
-
         return 3;
     }
     if(*(uint32_t*)((uint8_t *)block+sizeof(struct block_t))!=FENCE || *(uint32_t*)((uint8_t *)block+sizeof(struct block_t)+block->size+sizeof(uint32_t))!=FENCE) //Naruszenie płotków(do przeanalizowania)
@@ -358,14 +357,14 @@ int heap_validate(void)
             check=check_block(ptr);
             if(check)
             {
-                return check; //1 cz 3?
+                return check;
             }
         }
     }
 
     if(memory_manager.head->control!=sum_control(memory_manager.head) || memory_manager.tail->control!=sum_control(memory_manager.tail))
     {
-        return 3; //czy 3?
+        return 3;
     }
 
 
