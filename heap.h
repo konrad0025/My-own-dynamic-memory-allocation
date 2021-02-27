@@ -19,7 +19,7 @@ struct block_t{
 
     size_t free; // 1==free 0==busy
     size_t size; // block size
-    size_t control; // sum control
+    size_t control; // sum controlkkl
 
 };
 
