@@ -1,19 +1,3 @@
-#ifndef PROJECT1_HEAP_H
-#define PROJECT1_HEAP_H
-
-#define PAGESIZE 1024 * 4
-#define FENCE 0xaaaaaaaa
-#ifndef HEAP_T
-#define HEAP_T
-struct heap_t{
-
-    struct block_t *head;
-    struct block_t *tail;
-
-    size_t size;
-
-};
-
 #ifndef BLOCK_T
 #define BLOCK_T
 struct block_t{
@@ -23,7 +7,7 @@ struct block_t{
 
     size_t free; // 1==free 0==busy
     size_t size; // block size
-    size_t control; // control sum
+    size_t control; // sum control
 
 };
 
@@ -63,7 +47,5 @@ void* heap_malloc_aligned(size_t count);
 void* heap_calloc_aligned(size_t number, size_t size);
 void* heap_realloc_aligned(void* memblock, size_t size);
 
-#endif //PROJECT1_HEAP_H
-#endif //POINTER_TYPE_T
 #endif //HEAP_T
 #endif //BLOCK_T

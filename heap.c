@@ -2,33 +2,34 @@
 #include <errno.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdint.h>
 #include "heap.h"
 struct heap_t memory_manager={0,0,0};
 int heap_setup(void)
 {
     errno=0;
 
-        memory_manager.head=sbrk(PAGESIZE);
-        if(errno)
-        {
-            return -1;
-        }
-        memory_manager.tail=(struct block_t*)((uint8_t*)memory_manager.head+PAGESIZE-sizeof(struct block_t));
-        memory_manager.size=PAGESIZE;
+    memory_manager.head=(struct block_t*)sbrk(PAGESIZE);
+    if(errno)
+    {
+        return -1;
+    }
+    memory_manager.tail=(struct block_t*)((uint8_t*)memory_manager.head+PAGESIZE-sizeof(struct block_t));
+    memory_manager.size=PAGESIZE;
 
-        //HEAD
-        memory_manager.head->p_next=memory_manager.tail;
-        memory_manager.head->p_prev=NULL;
-        memory_manager.head->size=0;
-        memory_manager.head->free=0;
-        memory_manager.head->control=sum_control(memory_manager.head);
+    //HEAD
+    memory_manager.head->p_next=memory_manager.tail;
+    memory_manager.head->p_prev=NULL;
+    memory_manager.head->size=0;
+    memory_manager.head->free=0;
+    memory_manager.head->control=sum_control(memory_manager.head);
 
-        //TAIL
-        memory_manager.tail->p_next=NULL;
-        memory_manager.tail->p_prev=memory_manager.head;
-        memory_manager.tail->size=0;
-        memory_manager.tail->free=0;
-        memory_manager.tail->control=sum_control(memory_manager.tail);
+    //TAIL
+    memory_manager.tail->p_next=NULL;
+    memory_manager.tail->p_prev=memory_manager.head;
+    memory_manager.tail->size=0;
+    memory_manager.tail->free=0;
+    memory_manager.tail->control=sum_control(memory_manager.tail);
 
 
     return 0;
@@ -139,26 +140,26 @@ void* heap_malloc(size_t size)
         }
         block=block->p_next;
     }
-        errno=0;
+    errno=0;
 
     sbrk(PAGESIZE);
-        if(errno)
-        {
-            return NULL;
-        }
-        memory_manager.size=memory_manager.size+PAGESIZE;
-        struct block_t *new_tail,*tail2;
-        new_tail=(struct block_t*)((uint8_t*)memory_manager.head+memory_manager.size-sizeof(struct block_t));
-        new_tail->size=0;
-        new_tail->p_next=NULL;
-        new_tail->free=0;
-        tail2=memory_manager.tail;
-        memory_manager.tail=new_tail;
-        new_tail->p_prev=tail2->p_prev;
-        tail2->p_prev->p_next=new_tail;
-        tail2->p_prev->control=sum_control(tail2->p_prev);
-        new_tail->control=sum_control(new_tail);
-        return heap_malloc(size);
+    if(errno)
+    {
+        return NULL;
+    }
+    memory_manager.size=memory_manager.size+PAGESIZE;
+    struct block_t *new_tail,*tail2;
+    new_tail=(struct block_t*)((uint8_t*)memory_manager.head+memory_manager.size-sizeof(struct block_t));
+    new_tail->size=0;
+    new_tail->p_next=NULL;
+    new_tail->free=0;
+    tail2=memory_manager.tail;
+    memory_manager.tail=new_tail;
+    new_tail->p_prev=tail2->p_prev;
+    tail2->p_prev->p_next=new_tail;
+    tail2->p_prev->control=sum_control(tail2->p_prev);
+    new_tail->control=sum_control(new_tail);
+    return heap_malloc(size);
 
 }
 void* heap_calloc(size_t number, size_t size)
@@ -193,7 +194,7 @@ void* heap_realloc(void* memblock, size_t count)
     }
     if(pointer_valid!=get_pointer_type(memblock))
     {
-         return NULL;
+        return NULL;
     }
     if(count==0)
     {
@@ -249,7 +250,7 @@ void* heap_realloc(void* memblock, size_t count)
                 new_tail->control=sum_control(new_tail);
                 return heap_realloc(memblock,count);
             }
-            struct block_t *ptr=heap_malloc(count);
+            struct block_t *ptr=(struct block_t*)heap_malloc(count);
 
             if(ptr==NULL)
             {
@@ -416,7 +417,7 @@ void* heap_malloc_aligned(size_t count)
     {
         if((long long int)((empty_space(block)-sizeof(struct block_t)-sizeof(uint32_t)*2))>=(long long int)count)
         {
-            uint8_t *ptr=get_aligned_pointer(block);
+            uint8_t *ptr=(uint8_t*)get_aligned_pointer(block);
             if(ptr!=NULL)
             {
                 if(((long int)(uint8_t *)ptr-(long int)(uint8_t *)block-(long int)sizeof(struct block_t)-(long int)block->size-(long int)sizeof(uint32_t)*2>=(long int)(sizeof(struct block_t)+sizeof(uint32_t))) && (long int)(uint8_t *)block->p_next-(long int)(uint8_t*)ptr>=(long int)(sizeof(uint32_t)+count))
@@ -548,7 +549,7 @@ void* heap_realloc_aligned(void* memblock, size_t size)
                 new_tail->control=sum_control(new_tail);
                 return heap_realloc_aligned(memblock,size);
             }
-            struct block_t *ptr=heap_malloc_aligned(size);
+            struct block_t *ptr=(struct block_t*)heap_malloc_aligned(size);
 
             if(ptr==NULL)
             {
