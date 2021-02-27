@@ -420,7 +420,7 @@ void* heap_malloc_aligned(size_t count)
             uint8_t *ptr=(uint8_t*)get_aligned_pointer(block);
             if(ptr!=NULL)
             {
-                if(((long int)(uint8_t *)ptr-(long int)(uint8_t *)block-(long int)sizeof(struct block_t)-(long int)block->size-(long int)sizeof(uint32_t)*2>=(long int)(sizeof(struct block_t)+sizeof(uint32_t))) && (long int)(uint8_t *)block->p_next-(long int)(uint8_t*)ptr>=(long int)(sizeof(uint32_t)+count))
+                if(((uint8_t *)ptr-(uint8_t *)block-(long int)sizeof(struct block_t)-(long int)block->size-(long int)sizeof(uint32_t)*2>=(long int)(sizeof(struct block_t)+sizeof(uint32_t))) && (uint8_t *)block->p_next-(uint8_t*)ptr>=(long int)(sizeof(uint32_t)+count))
                 {
                     struct block_t *given;
                     given=(struct block_t*)((uint8_t *)ptr-sizeof(uint32_t)-sizeof(struct block_t));
