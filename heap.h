@@ -1,3 +1,15 @@
+#define PAGESIZE 1024 * 4
+#define FENCE 0xaaaaaaaa
+#ifndef HEAP_T
+#define HEAP_T
+struct heap_t{
+
+    struct block_t *head;
+    struct block_t *tail;
+
+    size_t size;
+
+};
 #ifndef BLOCK_T
 #define BLOCK_T
 struct block_t{
@@ -49,3 +61,4 @@ void* heap_realloc_aligned(void* memblock, size_t size);
 
 #endif //HEAP_T
 #endif //BLOCK_T
+#endif //POINTER_TYPE_T
